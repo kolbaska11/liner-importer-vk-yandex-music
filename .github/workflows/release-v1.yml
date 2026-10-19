@@ -1,0 +1,50 @@
+name: Publish v1.0.0
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/release-v1.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    name: Test, package and publish
+    if: github.repository == 'kolbaska11/liner-importer-vk-yandex-music'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install project dependencies
+        run: python -m pip install -r requirements.txt
+      - name: Run offline tests
+        run: python -m unittest discover -s tests -v
+      - name: Validate VK exporter
+        run: node --check exporters/vk_mobile.js
+      - name: Build source archive
+        shell: bash
+        run: |
+          mkdir -p dist
+          git archive --format=zip --prefix=liner-importer-vk-yandex-music-v1.0.0/ HEAD > dist/Liner_Importer_v1.0.0_Source.zip
+      - name: Create GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          if gh release view v1.0.0 >/dev/null 2>&1; then
+            echo "Release v1.0.0 already exists; skipping."
+            exit 0
+          fi
+          gh release create v1.0.0 \
+            dist/Liner_Importer_v1.0.0_Source.zip \
+            --target "$GITHUB_SHA" \
+            --title "v1.0.0 — First public release" \
+            --notes-file docs/RELEASE_NOTES_v1.0.0.md \
+            --latest
