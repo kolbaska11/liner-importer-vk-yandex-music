@@ -1,6 +1,6 @@
 <div align="center">
 
-![Liner Importer — VK & Yandex Music](assets/hero.png)
+![Liner Importer — VK & Yandex Music](assets/hero.jpg)
 
 # 🎶 Liner Importer — VK & Yandex Music
 

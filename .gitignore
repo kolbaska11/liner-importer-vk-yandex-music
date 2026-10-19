@@ -1,0 +1,42 @@
+# Secrets and authentication
+.env
+.env.*
+!.env.example
+auth/*
+!auth/.gitkeep
+*.cookie
+*token*.txt
+browser.json
+oauth.json
+
+# Private music, app state, exports and reports
+data/*
+!data/.gitkeep
+work/*
+!work/.gitkeep
+reports/*
+!reports/.gitkeep
+*.sqlite
+*.sqlite3
+*.db
+*.log
+*.errors.csv
+
+# Python, tools and editors
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+.ruff_cache/
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+
+# Accidental local exports placed in the project root
+VK_*.txt
+Yandex_*.csv
+*.har
+*.curl
+*.db-journal
